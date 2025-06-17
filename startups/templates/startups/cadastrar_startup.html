@@ -1,21 +1,13 @@
 {% extends "startups/base.html" %}
-
 {% block title %}Cadastrar Nova Empresa{% endblock %}
 
 {% block content %}
-<h2 style="text-align: center;">Cadastrar Nova Empresa</h2>
+<h2 class="mb-4">Cadastrar Nova Empresa</h2>
 
-<form method="post" style="max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+<form method="post" class="bg-white p-4 rounded shadow-sm">
     {% csrf_token %}
     {{ form.as_p }}
-    <div style="text-align: center;">
-        <button type="submit" style="background-color: #1976d2; color: white; padding: 10px 20px; border: none; border-radius: 5px;">
-            Salvar
-        </button>
-    </div>
+    <button type="submit" class="btn btn-success">Salvar</button>
+    <a href="{% url 'startups:listar_startups' %}" class="btn btn-secondary">Voltar</a>
 </form>
-
-<div style="text-align: center; margin-top: 20px;">
-    <a href="{% url 'startups:listar_startups' %}">Voltar para lista de empresas</a>
-</div>
 {% endblock %}

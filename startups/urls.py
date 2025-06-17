@@ -25,8 +25,8 @@ urlpatterns = [
         template_name='startups/password_reset_complete.html'
     ), name='password_reset_complete'),    
     # STARTUPS
-    path('startups/', views.listar_startups, name='listar_startups'),
-    path('startups/nova/', views.cadastrar_startup, name='cadastrar_startup'),
-    path('startups/<int:pk>/editar/', views.editar_startup, name='editar_startup'),
-    path('startups/<int:pk>/deletar/', views.deletar_startup, name='deletar_startup'),
+    path('', views.listar_startups, name='listar_startups'),
+    path('nova/', views.cadastrar_startup, name='cadastrar_startup'),
+    path('<int:pk>/editar/', views.editar_startup, name='editar_startup'),
+    path('<int:pk>/deletar/', views.deletar_startup, name='deletar_startup'),
 ]

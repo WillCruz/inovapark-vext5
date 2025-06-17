@@ -1,12 +1,54 @@
 {% extends "startups/base.html" %}
-
-{% block title %}Home - Inovaparq{% endblock %}
+{% block title %}Dashboard - Inovaparq{% endblock %}
 
 {% block content %}
-    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
-        <a href="#" class="card">Administração do Sistema</a>
-        <a href="{% url 'startups:listar_startups' %}" class="card">Cadastro de Empresas</a>
-        <a href="#" class="card">Fases da Incubação</a>
-        <a href="#" class="card">Relatórios</a>
+<h2 class="mb-4 text-center">Painel de Controle</h2>
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+
+    <div class="col">
+        <div class="card shadow-sm h-100 border-primary">
+            <div class="card-body text-center">
+                <i class="bi bi-people-fill display-4 text-primary mb-3"></i>
+                <h5 class="card-title">Empresas Incubadas</h5>
+                <p class="card-text">Acesse o cadastro e controle das startups incubadas.</p>
+                <a href="{% url 'startups:listar_startups' %}" class="btn btn-primary">Acessar</a>
+            </div>
+        </div>
     </div>
+
+    <div class="col">
+        <div class="card shadow-sm h-100 border-secondary">
+            <div class="card-body text-center">
+                <i class="bi bi-gear-fill display-4 text-secondary mb-3"></i>
+                <h5 class="card-title">Administração</h5>
+                <p class="card-text">Gerencie usuários, permissões e registros do sistema.</p>
+                <a href="#" class="btn btn-secondary disabled">Em breve</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card shadow-sm h-100 border-success">
+            <div class="card-body text-center">
+                <i class="bi bi-layers-fill display-4 text-success mb-3"></i>
+                <h5 class="card-title">Fases de Incubação</h5>
+                <p class="card-text">Controle as etapas e evolução de cada empresa.</p>
+                <a href="#" class="btn btn-success disabled">Em breve</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card shadow-sm h-100 border-info">
+            <div class="card-body text-center">
+                <i class="bi bi-bar-chart-fill display-4 text-info mb-3"></i>
+                <h5 class="card-title">Relatórios</h5>
+                <p class="card-text">Gere relatórios gerenciais e exporte dados consolidados.</p>
+                <a href="#" class="btn btn-info disabled">Em breve</a>
+            </div>
+        </div>
+    </div>
+
+</div>
 {% endblock %}

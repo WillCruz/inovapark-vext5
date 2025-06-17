@@ -1,46 +1,37 @@
 {% extends "startups/base.html" %}
-
-{% block title %}Lista de Empresas - Inovaparq{% endblock %}
+{% block title %}Lista de Empresas{% endblock %}
 
 {% block content %}
-
-<h2 style="text-align: center;">Empresas Cadastradas</h2>
-
-<div style="text-align: right; margin-bottom: 20px;">
-    <a href="{% url 'startups:cadastrar_startup' %}" 
-       style="background-color: #1976d2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
-        + Nova Empresa
-    </a>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Empresas Cadastradas</h2>
+    <a href="{% url 'startups:cadastrar_startup' %}" class="btn btn-primary">+ Nova Empresa</a>
 </div>
 
-<table style="width: 100%; border-collapse: collapse; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
-    <thead style="background: #1976d2; color: white;">
+<table class="table table-hover table-bordered bg-white shadow-sm">
+    <thead class="table-primary">
         <tr>
-            <th style="padding: 10px;">Nome</th>
-            <th style="padding: 10px;">CNPJ</th>
-            <th style="padding: 10px;">Representante</th>
-            <th style="padding: 10px;">Ativa?</th>
-            <th style="padding: 10px;">Ações</th>
+            <th>Nome</th>
+            <th>CNPJ</th>
+            <th>Representante</th>
+            <th>Ativa?</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
         {% for startup in startups %}
-        <tr style="border-bottom: 1px solid #ddd;">
-            <td style="padding: 10px;">{{ startup.nome }}</td>
-            <td style="padding: 10px;">{{ startup.cnpj }}</td>
-            <td style="padding: 10px;">{{ startup.representante }}</td>
-            <td style="padding: 10px;">{{ startup.ativo|yesno:"Sim,Não" }}</td>
-            <td style="padding: 10px;">
-                <a href="{% url 'startups:editar_startup' startup.pk %}">Editar</a> |
-                <a href="{% url 'startups:deletar_startup' startup.pk %}">Excluir</a>
+        <tr>
+            <td>{{ startup.nome }}</td>
+            <td>{{ startup.cnpj }}</td>
+            <td>{{ startup.representante }}</td>
+            <td>{{ startup.ativo|yesno:"Sim,Não" }}</td>
+            <td>
+                <a href="{% url 'startups:editar_startup' startup.pk %}" class="btn btn-sm btn-warning">Editar</a>
+                <a href="{% url 'startups:deletar_startup' startup.pk %}" class="btn btn-sm btn-danger">Excluir</a>
             </td>
         </tr>
         {% empty %}
-        <tr>
-            <td colspan="5" style="padding: 10px; text-align: center;">Nenhuma empresa cadastrada.</td>
-        </tr>
+        <tr><td colspan="5" class="text-center">Nenhuma empresa cadastrada.</td></tr>
         {% endfor %}
     </tbody>
 </table>
-
 {% endblock %}
