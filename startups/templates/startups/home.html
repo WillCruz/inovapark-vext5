@@ -1,0 +1,12 @@
+{% extends "startups/base.html" %}
+
+{% block title %}Home - Inovaparq{% endblock %}
+
+{% block content %}
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+        <a href="#" class="card">Administração do Sistema</a>
+        <a href="{% url 'startups:listar_startups' %}" class="card">Cadastro de Empresas</a>
+        <a href="#" class="card">Fases da Incubação</a>
+        <a href="#" class="card">Relatórios</a>
+    </div>
+{% endblock %}
