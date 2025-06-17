@@ -24,6 +24,7 @@ urlpatterns = [
     path('senha-redefinida/', auth_views.PasswordResetCompleteView.as_view(
         template_name='startups/password_reset_complete.html'
     ), name='password_reset_complete'),
+<<<<<<< HEAD
     
     
     # STARTUPS
@@ -31,4 +32,6 @@ urlpatterns = [
     path('startups/nova/', views.cadastrar_startup, name='cadastrar_startup'),
     path('startups/<int:pk>/editar/', views.editar_startup, name='editar_startup'),
     path('startups/<int:pk>/deletar/', views.deletar_startup, name='deletar_startup'),    
+=======
+>>>>>>> 61590590dec26349dc3d434d011e4ebbcb074da5
 ]
