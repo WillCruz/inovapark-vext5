@@ -1,0 +1,129 @@
+{% extends 'startups/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Estilos básicos para o Kanban (pode manter os mesmos de antes) */
+    .kanban-board {
+        display: flex;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        overflow-x: auto;
+    }
+
+    .kanban-column {
+        /* Em vez de 'flex: 1;', usamos uma largura fixa. */
+        /* Isso impede que a coluna encolha ou estique. */
+        flex-shrink: 0;
+        width: 350px;
+        /* <--- Você pode ajustar este valor! Tente 320px, 350px ou 400px. */
+
+        background-color: #e9ecef;
+        border-radius: 8px;
+        padding: 1rem;
+
+        /* Adicionamos isso para garantir que a coluna possa conter os cards e rolar internamente se necessário */
+        display: flex;
+        flex-direction: column;
+        max-height: 80vh;
+        /* Define uma altura máxima para a coluna */
+    }
+
+    /* Adicionamos uma regra para a área dos cards para permitir rolagem vertical DENTRO da coluna */
+    .kanban-cards {
+        flex-grow: 1;
+        overflow-y: auto;
+        /* Permite rolagem vertical se houver muitos cards */
+    }
+
+    .kanban-column h3 {
+        font-size: 1.2rem;
+    }
+
+    .kanban-card {
+        background-color: #fff;
+        border-radius: 6px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-content p {
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .card-content span {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
+    .card-footer {
+        padding-top: 0.75rem;
+        margin-top: 0.75rem;
+        border-top: 1px solid #e9ecef;
+        text-align: right;
+    }
+</style>
+
+<div class="kanban-board">
+    {% for fase in fases_ordenadas %}
+    <div class="kanban-column">
+        <h3>{{ fase.nome }}</h3>
+        <div class="kanban-cards">
+            {% for startup in fase.startups %}
+            <div class="kanban-card">
+
+
+                <div class="card-content">
+                    <p class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="fw-bold">
+                            {{ startup.nome }}
+                            {% if startup.documentacao_pendente %}
+                            <i class="bi bi-exclamation-triangle-fill text-warning" title="Documentação Pendente"></i>
+                            {% endif %}
+                            {% if startup.financeiro_pendente %}
+                            <i class="bi bi-coin text-warning" title="Financeiro Pendente"></i>
+                            {% endif %}
+                        </span>
+
+                        <span
+                            class="badge {% if startup.plano == 'grow' %}text-bg-success{% else %}text-bg-primary{% endif %}">
+                            {{ startup.get_plano_display }}
+                        </span>
+                    </p>
+
+                    <small class="text-muted">{{ startup.get_tipo_incubacao_display }}</small>
+                </div>
+
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <div>
+                        <a href="{% url 'startups:financeiro_startup' startup.id %}"
+                            class="btn btn-outline-success btn-sm" title="Financeiro">
+                            <i class="bi bi-cash-coin"></i> Financeiro
+                        </a>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'startups:documentos_startup' startup.id %}"
+                            class="btn btn-outline-secondary btn-sm">Documentos</a>
+
+                        {% if startup.fase != 'graduacao' %}
+                        <form action="{% url 'startups:avancar_fase' startup.id %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                Avançar Fase &rarr;
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

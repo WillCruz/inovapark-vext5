@@ -1,0 +1,21 @@
+{% extends "startups/base.html" %}
+
+{% block title %}Editar Empresa{% endblock %}
+
+{% block content %}
+<h2 style="text-align: center;">Editar Empresa</h2>
+
+<form method="post" style="max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div style="text-align: center;">
+        <button type="submit" style="background-color: #1976d2; color: white; padding: 10px 20px; border: none; border-radius: 5px;">
+            Salvar Alterações
+        </button>
+    </div>
+</form>
+
+<div style="text-align: center; margin-top: 20px;">
+    <a href="{% url 'startups:listar_startups' %}">Voltar para lista de empresas</a>
+</div>
+{% endblock %}

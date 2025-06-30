@@ -1,0 +1,19 @@
+{% extends "startups/base.html" %}
+
+{% block title %}Excluir Empresa{% endblock %}
+
+{% block content %}
+<h2 style="text-align: center; color: red;">Excluir Empresa</h2>
+
+<p style="text-align: center;">
+    Tem certeza que deseja excluir a empresa <strong>{{ startup.nome }}</strong>?
+</p>
+
+<form method="post" style="text-align: center;">
+    {% csrf_token %}
+    <button type="submit" style="background-color: red; color: white; padding: 10px 20px; border: none; border-radius: 5px;">
+        Confirmar Exclusão
+    </button>
+    <a href="{% url 'startups:listar_startups' %}" style="margin-left: 20px;">Cancelar</a>
+</form>
+{% endblock %}

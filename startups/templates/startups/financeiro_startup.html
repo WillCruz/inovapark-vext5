@@ -1,0 +1,63 @@
+{% extends 'startups/base.html' %}
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>Financeiro: {{ startup.nome }}</h3>
+        <a href="{% url 'startups:fases_kanban' %}" class="btn btn-secondary">← Voltar ao Kanban</a>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <a href="{% url 'startups:adicionar_pagamento' startup.id %}" class="btn btn-primary">Adicionar Pagamento</a>
+            <a href="{% url 'startups:calcular_faturamento' startup.id %}" class="btn btn-success">Calcular Faturamento</a>
+        </div>
+        <div class="col-md-4 d-flex align-items-center justify-content-end">
+            <form method="post" class="form-check form-switch">
+                {% csrf_token %}
+                {{ form_pendente.financeiro_pendente }}
+                <label for="{{ form_pendente.financeiro_pendente.id_for_label }}" class="form-check-label">Financeiro Pendente</label>
+                <button type="submit" class="btn btn-sm btn-outline-primary ms-2">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+    <h4>Histórico de Pagamentos</h4>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>Descrição</th>
+                    <th>Data</th>
+                    <th>Valor R$</th>
+                    <th>Status</th>
+                    <th class="text-end">Ações</th> </tr>
+            </thead>
+            <tbody>
+                {% for pagamento in pagamentos %}
+                <tr>
+                    <td>{{ pagamento.descricao|default:"N/A" }}</td>
+                    <td>{{ pagamento.data|date:"d/m/Y" }}</td>
+                    <td>{{ pagamento.valor }}</td>
+                    <td>
+                        <span class="badge {% if pagamento.status == 'pago' %}text-bg-success{% else %}text-bg-warning{% endif %}">
+                            {{ pagamento.get_status_display }}
+                        </span>
+                    </td>
+                    <td class="text-end">
+                        <a href="{% url 'startups:editar_pagamento' pagamento.id %}" class="btn btn-outline-primary btn-sm" title="Editar">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <form action="{% url 'startups:excluir_pagamento' pagamento.id %}" method="post" class="d-inline" onsubmit="return confirm('Tem certeza que deseja excluir este registro de pagamento?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger btn-sm" title="Excluir">
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="text-center">Nenhum registro de pagamento encontrado.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

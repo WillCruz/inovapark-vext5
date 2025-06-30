@@ -1,0 +1,40 @@
+{% extends 'startups/base.html' %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>Documentos e Rascunho: {{ startup.nome }}</h3>
+        <a href="{% url 'startups:fases_kanban' %}" class="btn btn-secondary">← Voltar ao Kanban</a>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="{{ form.rascunho_documentos.id_for_label }}" class="form-label">Rascunho</label>
+            {{ form.rascunho_documentos }}
+        </div>
+
+        <div class="form-check form-switch mb-4">
+            {{ form.documentacao_pendente }}
+            <label for="{{ form.documentacao_pendente.id_for_label }}" class="form-check-label">Documentação Pendente</label>
+        </div>
+
+        <hr>
+
+        <div class="d-flex justify-content-between">
+            <div>
+                <button type="button" class="btn btn-outline-primary">Anexar Documentos</button>
+                <button type="button" class="btn btn-outline-secondary">Baixar Documentos</button>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}
