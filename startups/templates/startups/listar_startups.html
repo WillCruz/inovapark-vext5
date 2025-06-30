@@ -1,37 +1,68 @@
-{% extends "startups/base.html" %}
-{% block title %}Lista de Empresas{% endblock %}
+{% extends 'startups/base.html' %}
+
+{% block title %}Startups Cadastradas - Inovaparq{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Empresas Cadastradas</h2>
-    <a href="{% url 'startups:cadastrar_startup' %}" class="btn btn-primary">+ Nova Empresa</a>
-</div>
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold">Startups Cadastradas</h2>
+        <a href="{% url 'startups:cadastrar_startup' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-1"></i> Nova Startup
+        </a>
+    </div>
 
-<table class="table table-hover table-bordered bg-white shadow-sm">
-    <thead class="table-primary">
-        <tr>
-            <th>Nome</th>
-            <th>CNPJ</th>
-            <th>Representante</th>
-            <th>Ativa?</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for startup in startups %}
-        <tr>
-            <td>{{ startup.nome }}</td>
-            <td>{{ startup.cnpj }}</td>
-            <td>{{ startup.representante }}</td>
-            <td>{{ startup.ativo|yesno:"Sim,Não" }}</td>
-            <td>
-                <a href="{% url 'startups:editar_startup' startup.pk %}" class="btn btn-sm btn-warning">Editar</a>
-                <a href="{% url 'startups:deletar_startup' startup.pk %}" class="btn btn-sm btn-danger">Excluir</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="5" class="text-center">Nenhuma empresa cadastrada.</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
+    {% if startups %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nome</th>
+                        <th>Responsável</th>
+                        <th>Fase</th>
+                        <th>Modelo Incubação</th>
+                        <th>Plano</th>
+                        <th>Status</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for startup in startups %}
+                        <tr>
+                            <td>
+                                <strong>{{ startup.nome }}</strong><br>
+                                <small class="text-muted">{{ startup.email }}</small>
+                            </td>
+                            <td>{{ startup.representante }}</td>
+                            <td>{{ startup.fase.nome }}</td>
+                            <td>{{ startup.modelo_incubacao.nome }}</td>
+                            <td>{{ startup.plano.nome }}</td>
+                            <td>
+                                {% if not startup.ativo %}
+                                    <span class="badge bg-danger">Inativa</span>
+                                {% else %}
+                                    <span class="badge bg-success">Ativa</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end">
+                                <a href="{% url 'startups:detalhar_startup' startup.id %}" class="btn btn-outline-secondary btn-sm me-1" title="Detalhes">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{% url 'startups:editar_startup' startup.id %}" class="btn btn-outline-primary btn-sm me-1" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'startups:excluir_startup' startup.id %}" class="btn btn-outline-danger btn-sm" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir esta startup?');">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            Nenhuma startup cadastrada ainda. Clique no botão "Nova Startup" para iniciar.
+        </div>
+    {% endif %}
+</div>
 {% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'startups/base.html' %}
+
+{% block title %}Detalhes da Startup{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Detalhes da Startup</h2>
+        <a href="{% url 'startups:listar_startups' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i> Voltar
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <strong>{{ startup.nome }}</strong>
+        </div>
+        <div class="card-body">
+            <p><strong>CNPJ:</strong> {{ startup.cnpj }}</p>
+            <p><strong>Responsável:</strong> {{ startup.representante }}</p>
+            <p><strong>Email:</strong> {{ startup.email }}</p>
+            <p><strong>Telefone:</strong> {{ startup.telefone }}</p>
+            <p><strong>Status:</strong>
+                {% if not startup.ativo %}
+                    <span class="badge bg-danger">Inativa</span>
+                {% else %}
+                    <span class="badge bg-success">Ativa</span>
+                {% endif %}
+            </p>
+            {% if startup.fase %}
+                <p><strong>Fase da Incubação:</strong> {{ startup.fase.nome }}</p>
+            {% endif %}
+            {% if startup.modelo_incubacao %}
+                <p><strong>Modelo de Incubação:</strong> {{ startup.modelo_incubacao.nome }}</p>
+            {% endif %}
+            {% if startup.plano %}
+                <p><strong>Plano:</strong> {{ startup.plano.nome }}</p>
+                <p class="text-muted"><small>{{ startup.plano.descricao }}</small></p>
+            {% endif %}
+        </div>
+        <div class="card-footer text-end">
+            <a href="{% url 'startups:editar_startup' startup.id %}" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Editar
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

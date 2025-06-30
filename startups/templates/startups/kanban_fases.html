@@ -1,0 +1,98 @@
+{% extends 'startups/base.html' %}
+
+{% block title %}Kanban de Fases - Inovaparq{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="fw-bold">Kanban: Fases de Incubação</h2>
+    <a href="{% url 'startups:home' %}" class="btn btn-outline-secondary">
+      <i class="bi bi-arrow-left me-1"></i> Voltar
+    </a>
+  </div>
+
+  <!-- Onde o Kanban irá renderizar -->
+  <div id="myKanban"></div>
+</div>
+
+<!-- jKanban CSS -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/jkanban@1.2.0/dist/jkanban.min.css"
+/>
+
+<!-- jKanban JS -->
+<script src="https://unpkg.com/jkanban@1.2.0/dist/jkanban.min.js"></script>
+
+<script>
+// Função para ler CSRF do cookie Django
+function getCookie(name) {
+  let v = document.cookie.match('(^|;)\\s*'+name+'\\s*=\\s*([^;]+)');
+  return v ? v.pop() : '';
+}
+
+// Monta o array de boards a partir do contexto Django
+const boards = [
+  {% for fase in fases %}
+  {
+    id:    'fase-{{ fase.id }}',
+    title: '{{ fase.nome }} ({{ fase.startups.count }})',
+    class: 'bg-light',
+    item: [
+      {% for s in fase.startups.all %}
+      {
+        id:    'card-{{ s.id }}',
+        title: `
+          <div>
+            <strong>{{ s.nome }}</strong><br>
+            <small>Modelo: {{ s.modelo_incubacao }}</small><br>
+            <small>Plano: {{ s.plano }}</small><br>
+            <small>Resp.: {{ s.representante }}</small>
+          </div>
+        `
+      },
+      {% endfor %}
+    ]
+  },
+  {% endfor %}
+];
+
+// Inicializa o Kanban
+new jKanban({
+  element: '#myKanban',
+  boards: boards,
+  dragItems: true,
+
+  // Substitua dragEndBoard por dropEl (é o callback correto para quando um item cai)
+  dropEl: function(el, target, source, sibling) {
+    const startupId = el.dataset.eid.replace('card-','');
+    const faseId    = target.parentElement.dataset.id.replace('fase-','');
+    console.log(`⬢ Mover cartão startup #${startupId} para fase #${faseId}`);  // ← log
+
+    fetch("{% url 'startups:update_startup_fase' %}", {
+      method: 'POST',
+      credentials: 'same-origin',    // garante envio do cookie
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken'),
+      },
+      body: JSON.stringify({ id: startupId, fase: faseId })
+    })
+    .then(r => {
+      console.log('Resposta do servidor:', r.status);
+      return r.json();
+    })
+    .then(json => {
+      console.log('JSON recebido:', json);
+      if (!json.success) {
+        alert('Erro ao atualizar fase: ' + (json.error||''));
+      }
+    })
+    .catch(err => {
+      console.error('Falha na requisição AJAX', err);
+      alert('Não foi possível mover esse card. Tente novamente.');
+    });
+  }
+});
+</script>
+{% endblock %}
