@@ -2,32 +2,34 @@
 {% load static %}
 
 {% block content %}
-<style>
+<style> 
+    
     /* Estilos básicos para o Kanban (pode manter os mesmos de antes) */
     .kanban-board {
         display: flex;
-        gap: 1.5rem;
-        padding: 1.5rem;
+        gap: 1rem;
+        padding: 1rem;
         overflow-x: auto;
     }
 
     .kanban-column {
-        /* Em vez de 'flex: 1;', usamos uma largura fixa. */
-        /* Isso impede que a coluna encolha ou estique. */
-        flex-shrink: 0;
-        width: 350px;
-        /* <--- Você pode ajustar este valor! Tente 320px, 350px ou 400px. */
+    /* 1. PERMITE QUE A COLUNA CRESÇA se houver espaço livre na tela */
+    flex-grow: 1;
 
-        background-color: #e9ecef;
-        border-radius: 8px;
-        padding: 1rem;
+    /* 2. DEFINE A LARGURA IDEAL/INICIAL da coluna */
+    flex-basis: 340px; 
+    
+    /* 3. OPCIONAL, MAS RECOMENDADO: Define uma largura MÁXIMA para não ficar gigante em telas muito grandes */
+    max-width: 450px;
 
-        /* Adicionamos isso para garantir que a coluna possa conter os cards e rolar internamente se necessário */
-        display: flex;
-        flex-direction: column;
-        max-height: 80vh;
-        /* Define uma altura máxima para a coluna */
-    }
+    /* O resto do seu estilo continua igual, com um pequeno ajuste na altura */
+    background-color: #e9ecef;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh; /* Um pouco mais de altura */
+}
 
     /* Adicionamos uma regra para a área dos cards para permitir rolagem vertical DENTRO da coluna */
     .kanban-cards {

@@ -41,6 +41,8 @@ def listar_startups(request):
     startups = Startup.objects.all()
     return render(request, 'startups/listar_startups.html', {'startups': startups})
 
+
+
 # Cadastrar nova startup
 @login_required
 def cadastrar_startup(request):
@@ -76,6 +78,9 @@ def deletar_startup(request, pk):
     return render(request, 'startups/deletar_startup.html', {'startup': startup})
 
 ##############################################################################################################
+
+
+
 
 @login_required
 def fases_kanban_view(request):
