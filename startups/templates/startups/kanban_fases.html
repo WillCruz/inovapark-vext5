@@ -57,7 +57,7 @@ const boards = [
   {% endfor %}
 ];
 
-// Inicializa o Kanban
+// Kanban
 new jKanban({
   element: '#myKanban',
   boards: boards,
@@ -67,11 +67,11 @@ new jKanban({
   dropEl: function(el, target, source, sibling) {
     const startupId = el.dataset.eid.replace('card-','');
     const faseId    = target.parentElement.dataset.id.replace('fase-','');
-    console.log(`⬢ Mover cartão startup #${startupId} para fase #${faseId}`);  // ← log
+    console.log(`⬢ Mover cartão startup #${startupId} para fase #${faseId}`); 
 
     fetch("{% url 'startups:update_startup_fase' %}", {
       method: 'POST',
-      credentials: 'same-origin',    // garante envio do cookie
+      credentials: 'same-origin', 
       headers: {
         'Content-Type': 'application/json',
         'X-CSRFToken': getCookie('csrftoken'),
